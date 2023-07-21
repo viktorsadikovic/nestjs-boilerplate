@@ -166,7 +166,7 @@ Npm scripts basically allow us to call (and chain) terminal commands via npm.
 | --------------------------- | ------------------------------------------------------------------------------------------------- |
 | `ci`, `chore`, `docs`, `feat`,`fix`, `perf`, `refactor`, `revert`, `style`                | Module/component you are working on|
 
-# [Pull Request Template](http://link.com)
+# [Pull Request Template](.github/pull_request_template.md)
 
 # Common Issues
 

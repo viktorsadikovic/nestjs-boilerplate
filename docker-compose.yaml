@@ -1,0 +1,71 @@
+version: '3'
+services: 
+  db:
+    image: postgres:13.4
+    restart: always
+    environment: 
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=nestjs-boilerplate
+    container_name: postgres-db
+    ports:
+    - 5432
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data/pgdata
+    networks:
+      - node-network
+  mongodb:
+    image: mongo:6-jammy
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./mongodbdata:/data/db
+    networks:
+      - node-network
+  api:
+    image: viktorsadikovic/nestjs-boilerplate
+    environment: 
+      - APP_ENV=local
+      - APP_NAME=NestJSBoilerplate
+      - APP_HOST=localhost
+      - APP_PORT=3000
+      - APP_FALLBACK_LANGUAGE=en
+      - APP_HEADER_LANGUAGE=x-custom-lang
+      - MONGODB_DB=nestjs-boilerplate
+      - MONGODB_HOST=mongodb
+      - MONGODB_USER=mongodb
+      - MONGODB_PASSWORD=27017
+      - MONGODB_RETRY_ATTEMPTS=3
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/nestjs-boilerplate
+      - DATABASE_TYPE=postgres
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_NAME=nestjs-boilerplate
+      - DATABASE_SYNCHRONIZE=true
+      - API_PREFIX=api
+      - API_VERSION=v1
+      - SWAGGER_PATH=docs
+      - SWAGGER_USER=test
+      - SWAGGER_PASSWORD=test
+    ports: 
+      - "3000:3000"
+    container_name: nestjs-boilerplate
+    depends_on: 
+      - db
+      - mongodb
+    volumes: 
+      - .:/app
+      - /app/node_modules
+    networks:
+      - node-network
+volumes:
+  pgdata:
+    driver: local
+  mongodbdata:
+    driver: local
+networks:
+  node-network:
+    driver: bridge

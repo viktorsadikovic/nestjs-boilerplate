@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npx --no-install commitlint --edit
+
+# The first word should be one of the rules items you have written in your .commitlintrc.json file
+# The scope is the module/component you are working on
+# For commits that may have breaking changes, you need to add “!” at the end of (scope)

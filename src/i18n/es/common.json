@@ -1,0 +1,11 @@
+{
+  "confirmEmail": "Confirm email",
+  "resetPassword": "Reset password",
+  "health": "Saludable",
+  "404NotFound": "{item} no encontrado",
+  "USER_NOT_FOUND": "Usuario no encontrado",
+  "ITEM_NOT_FOUND": "Item no encontrado",
+  "NOT_EMPTY": "{property} cannot be empty SPANISH",
+  "INVALID_MONGO_ID": "Invalido Mongo ID",
+  "INVALID_EMAIL": "Invalido email"
+}

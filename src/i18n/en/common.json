@@ -1,0 +1,11 @@
+{
+  "confirmEmail": "Confirm email",
+  "resetPassword": "Reset password",
+  "health": "Healthy",
+  "404NotFound": "{item} Not Found",
+  "USER_NOT_FOUND": "User Not Found",
+  "ITEM_NOT_FOUND": "Item Not Found",
+  "NOT_EMPTY": "$t(common.{property}) cannot be empty",
+  "INVALID_MONGO_ID": "Invalid Mongo ID",
+  "INVALID_EMAIL": "Invalid email"
+}

@@ -8,7 +8,7 @@ export class CreateUserDto {
   firstName: string;
 
   @ApiProperty()
-  @IsString({ message: i18nValidationMessage('common.INVALID_EMAIL') })
+  @IsString()
   lastName: string;
 
   @ApiProperty()
@@ -16,7 +16,7 @@ export class CreateUserDto {
   age: number;
 
   @ApiProperty()
-  @IsEmail({}, { message: i18nValidationMessage('common.INVALID_EMAIL') })
+  @IsEmail()
   email: string;
 
   @ApiProperty()

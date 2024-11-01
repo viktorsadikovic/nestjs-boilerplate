@@ -18,30 +18,29 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const statusCode = exception.getStatus();
     let status: ResponseStatus = ResponseStatus.FAIL;
-    let message: string[] | string = exception.message || null;
+    let errors: string[] | string = exception.message || null;
+    const description = exception.getResponse()['error'];
 
     if (statusCode === 500) {
       status = ResponseStatus.ERROR;
     }
 
-    if (statusCode === 400 && exception.getResponse()['message']) {
-      message = exception.getResponse()['message'];
+    if (statusCode === 400 && exception.getResponse()['message'].length) {
+      errors = exception.getResponse()['message'];
     }
 
-    if (typeof message === 'string') {
-      message = [message];
+    if (typeof errors === 'string') {
+      errors = [errors];
     }
 
     const body = {
-      status,
       statusCode,
-      message,
-      timestamp: new Date().toISOString(),
-      endpoint: request.url,
+      description,
+      errors,
     };
 
     this.logger.warn(
-      `{status: '${status}', message: '${message}', code: '${statusCode}', timestamp: ${new Date().toISOString()}, endpoint: ${
+      `{status: '${status}', message: '${errors}', code: '${statusCode}', timestamp: ${new Date().toISOString()}, endpoint: ${
         request.url
       }}`,
     );

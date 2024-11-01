@@ -4,10 +4,12 @@ import { NestFactory } from '@nestjs/core';
 import { useContainer } from 'class-validator';
 import * as compression from 'compression';
 import helmet from 'helmet';
-import { I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters';
-import { FormatResponseInterceptor } from './common/interceptors';
+import {
+  FormatResponseInterceptor,
+  LoggingInterceptor,
+} from './common/interceptors';
 import { MorganMiddleware } from './common/middlewares';
 import { setupSwagger } from './config';
 import { WinstonLogger } from './config/winston-logger.config';
@@ -15,7 +17,6 @@ import { WinstonLogger } from './config/winston-logger.config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: true,
-    // bodyParser: false,
     logger: WinstonLogger,
   });
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
@@ -30,23 +31,17 @@ async function bootstrap() {
     },
   );
   app.useGlobalPipes(
-    // new ValidationPipe({
-    //   whitelist: true,
-    // }),
-    new I18nValidationPipe({ whitelist: true }),
+    new ValidationPipe({
+      transform: true,
+    }),
+    // new I18nValidationPipe({ whitelist: true }),
   );
 
-  app.useGlobalFilters(
-    new HttpExceptionFilter(),
-    new I18nValidationExceptionFilter({
-      errorFormatter(errors) {
-        return errors.flatMap((error) => {
-          return Object.values(error.constraints);
-        });
-      },
-    }),
+  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalInterceptors(
+    new FormatResponseInterceptor(),
+    new LoggingInterceptor(),
   );
-  app.useGlobalInterceptors(new FormatResponseInterceptor());
 
   setupSwagger(app);
 
